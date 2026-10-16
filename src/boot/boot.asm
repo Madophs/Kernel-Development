@@ -31,6 +31,7 @@ start:
     or al, 1        ; Set Protected Mode bit in cr0 (Control Register 0)
     mov cr0, eax
     ;jmp CODE_SEG:is_A20_on
+    jmp CODE_SEG:load32
     jmp $
 
 ; gdt offset 0x0
@@ -107,7 +108,7 @@ ata_lba_read:
     ; Finished sending upper 16 bits of the LBA
 
     mov dx, 0x1f7
-    mov al, 0x20
+    mov al, 0x20        ; Read sectors command
     out dx, al
 
     ; Read all sectors into memory
@@ -118,7 +119,15 @@ ata_lba_read:
 .try_again:
     mov dx, 0x1f7
     in al, dx
+    ; Check BSY (busy) flag
+    test al, 0x80
+    jnz .try_again
+    ; Check for errors
+    test al, 0x01
+    jnz .read_error
+    ; Check for DRQ (Data request)
     test al, 8
+    jz .try_again
     ; We need to read 256 words at a time
     mov ecx, 256
     mov dx, 0x1f0
@@ -127,6 +136,9 @@ ata_lba_read:
     loop .next_sector
     ; End of reading sectors into memory
     ret
+.read_error
+    hlt
+    jmp .read_error
 
 times 510-($ - $$) db 0
 dw 0xAA55
