@@ -30,5 +30,8 @@ main:
     mov ss, ax
     mov ebp, 0x00200000
     mov esp, ebp
+.sub_main:
     hlt
-    jmp main
+    jmp .sub_main
+
+times 512-($ - $$) db 0
