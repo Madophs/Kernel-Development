@@ -1,0 +1,9 @@
+#ifndef CONFIG_H
+#define CONFIG_H
+
+#define KERNEL_CODE_SELECTOR 0x8
+#define KERNEL_DATA_SELECTOR 0x10
+
+#define MDSOS_TOTAL_INTERRUPTS 0x100
+
+#endif

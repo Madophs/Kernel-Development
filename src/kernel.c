@@ -1,7 +1,8 @@
-#include "kernel.h"
-
 #include <stddef.h>
 #include <stdint.h>
+
+#include "kernel.h"
+#include "idt/idt.h"
 
 uint16_t *video_mem = 0;
 uint16_t terminal_row = 0;
@@ -62,4 +63,7 @@ void kernel_main()
 {
     terminal_initialize();
     print("Hola MdsOS\nNueva linea");
+
+    // Initialize Interrupt Descriptor Table
+    idt_init();
 }
