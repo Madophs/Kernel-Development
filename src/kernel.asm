@@ -2,6 +2,8 @@
 
 global _start
 
+extern kernel_main
+
 CODE_SEG equ 0x8
 DATA_SEG equ 0x10
 
@@ -30,6 +32,7 @@ main:
     mov ss, ax
     mov ebp, 0x00200000
     mov esp, ebp
+    call kernel_main
 .sub_main:
     hlt
     jmp .sub_main
