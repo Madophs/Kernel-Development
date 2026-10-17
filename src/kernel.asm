@@ -27,6 +27,7 @@ main:
     mov es, ax
     mov fs, ax
     mov gs, ax
+    mov ss, ax
     mov ebp, 0x00200000
     mov esp, ebp
     hlt
