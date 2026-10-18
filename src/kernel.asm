@@ -32,6 +32,21 @@ main:
     mov ss, ax
     mov ebp, 0x00200000
     mov esp, ebp
+
+    ; Remap the master PIC (Programable Interrupt Controller)
+    mov al, 00010001b
+    out 0x20, al ; Tell master PIC
+
+    mov al, 0x20 ; Interrupt 0x20 is where master ISR should start
+    out 0x21, al
+
+    mov al, 00000001b
+    out 0x21, al
+    ; End remap of the master PIC
+
+    ; Enable interrupts
+    sti
+
     call kernel_main
 .sub_main:
     hlt
