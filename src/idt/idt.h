@@ -20,4 +20,7 @@ struct idtr_desc
 
 void idt_init();
 
+extern void enable_interrupts();
+extern void disable_interrupts();
+
 #endif
