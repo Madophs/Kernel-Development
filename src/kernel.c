@@ -3,6 +3,7 @@
 
 #include "kernel.h"
 #include "idt/idt.h"
+#include "memory/heap/kheap.h"
 
 uint16_t *video_mem = 0;
 uint16_t terminal_row = 0;
@@ -62,7 +63,9 @@ void terminal_initialize()
 void kernel_main()
 {
     terminal_initialize();
-    print("Hola MdsOS\nNueva linea");
+    print("Hola MdsOS\nNueva linea\n");
+
+    kheap_init();
 
     // Initialize Interrupt Descriptor Table
     idt_init();
