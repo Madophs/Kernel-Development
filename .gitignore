@@ -61,4 +61,7 @@ screen
 # binaries
 *.bin
 
+# clangd lsp configs
+compile_commands.json
+
 tags
