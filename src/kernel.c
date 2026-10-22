@@ -4,10 +4,13 @@
 #include "kernel.h"
 #include "idt/idt.h"
 #include "memory/heap/kheap.h"
+#include "memory/paging/paging.h"
 
 uint16_t *video_mem = 0;
 uint16_t terminal_row = 0;
 uint16_t terminal_col = 0;
+
+struct paging_4gb_chuck* kernel_chunk = 0x00;
 
 uint16_t terminal_make_char(char c, uint8_t color)
 {
@@ -69,6 +72,13 @@ void kernel_main()
 
     // Initialize Interrupt Descriptor Table
     idt_init();
+
+    // Setup paging
+    kernel_chunk = paging_new_4gb(PAGING_IS_WRITEABLE | PAGING_IS_PRESENT | PAGING_ACCESS_FROM_ALL);
+
+    paging_switch(paging_4gb_chunk_get_directory(kernel_chunk));
+
+    paging_enable();
 
     // Enable system interrupts
     enable_interrupts();
